@@ -1,0 +1,147 @@
+项目结构分析
+这是一个外卖点餐系统（Sky Take Out），基于 Spring Boot 2.7.3 的多模块 Maven 项目。以下是详细的文件夹功能分析：
+
+📦 根目录：sky-take-out/
+整个项目的父模块，采用 Maven 多模块架构，包含三个子模块：
+sky-common - 通用工具模块
+sky-pojo - 数据对象模块
+sky-server - 业务服务模块
+
+1️⃣ sky-common/ - 通用工具模块
+存放项目中通用的工具类、常量、异常等基础组件。
+📁 src/main/java/com/sky/
+constant/ - 常量定义
+AutoFillConstant.java - 自动填充相关常量
+JwtClaimsConstant.java - JWT Token 载荷常量
+MessageConstant.java - 消息提示常量
+PasswordConstant.java - 密码相关常量
+StatusConstant.java - 状态码常量
+context/ - 上下文管理
+BaseContext.java - 线程本地变量存储用户信息（如当前登录用户ID）
+enumeration/ - 枚举类
+OperationType.java - 操作类型枚举（增删改查等）
+exception/ - 自定义异常
+包含各种业务异常类：
+AccountLockedException.java - 账户锁定异常
+AccountNotFoundException.java - 账户不存在异常
+LoginFailedException.java - 登录失败异常
+PasswordErrorException.java - 密码错误异常
+OrderBusinessException.java - 订单业务异常
+ShoppingCartBusinessException.java - 购物车业务异常
+等其他业务异常...
+json/ - JSON 处理
+JacksonObjectMapper.java - Jackson 序列化/反序列化工具配置
+properties/ - 配置属性类
+用于映射 yml 配置文件中的属性：
+AliOssProperties.java - 阿里云 OSS 配置
+JwtProperties.java - JWT 配置
+WeChatProperties.java - 微信支付配置
+result/ - 统一返回结果
+Result.java - 统一响应封装类
+PageResult.java - 分页响应封装类
+utils/ - 工具类
+JwtUtil.java - JWT Token 生成和验证
+AliOssUtil.java - 阿里云文件上传工具
+HttpClientUtil.java - HTTP 客户端工具
+WeChatPayUtil.java - 微信支付工具
+
+2️⃣ sky-pojo/ - 数据对象模块
+存放数据传输对象、实体类、视图对象等 POJO 类。
+📁 src/main/java/com/sky/
+dto/ - 数据传输对象（Data Transfer Object）
+接收前端传递的数据，主要用于：
+用户登录：EmployeeLoginDTO.java, UserLoginDTO.java
+分页查询：EmployeePageQueryDTO.java, DishPageQueryDTO.java, CategoryPageQueryDTO.java 等
+业务操作：OrdersDTO.java, OrdersPaymentDTO.java, OrdersCancelDTO.java 等
+数据修改：EmployeeDTO.java, DishDTO.java, SetmealDTO.java 等
+entity/ - 实体类
+对应数据库表的实体对象：
+Employee.java - 员工实体
+User.java - 用户实体
+Dish.java - 菜品实体
+DishFlavor.java - 菜品口味实体
+Category.java - 分类实体
+Orders.java - 订单实体
+OrderDetail.java - 订单明细实体
+Setmeal.java - 套餐实体
+SetmealDish.java - 套餐菜品关系实体
+ShoppingCart.java - 购物车实体
+AddressBook.java - 地址簿实体
+vo/ - 视图对象（View Object）
+返回给前端展示的数据：
+EmployeeLoginVO.java - 员工登录返回信息
+UserLoginVO.java - 用户登录返回信息
+DishVO.java, DishItemVO.java - 菜品展示对象
+SetmealVO.java - 套餐展示对象
+OrderVO.java, OrderSubmitVO.java - 订单展示对象
+OrderReportVO.java, SalesTop10ReportVO.java - 报表统计对象
+BusinessDataVO.java - 营业数据对象
+等其他视图对象...
+
+3️⃣ sky-server/ - 业务服务模块
+核心业务逻辑实现，包含控制器、服务层、数据访问层等。
+📁 src/main/java/com/sky/
+config/ - 配置类
+WebMvcConfiguration.java - Web MVC 配置（拦截器、消息转换器等）
+controller/admin/ - 控制器层
+处理 HTTP 请求：
+EmployeeController.java - 员工管理接口（目前已有）
+后续会添加其他 Controller
+handler/ - 处理器
+GlobalExceptionHandler.java - 全局异常处理器
+interceptor/ - 拦截器
+JwtTokenAdminInterceptor.java - JWT Token 管理端拦截器（验证登录状态）
+mapper/ - 数据访问层（MyBatis Mapper 接口）
+EmployeeMapper.java - 员工数据访问接口
+service/ - 业务逻辑层
+EmployeeService.java - 员工服务接口
+impl/EmployeeServiceImpl.java - 员工服务实现类
+SkyApplication.java - 启动类
+Spring Boot 应用入口
+📁 src/main/resources/
+mapper/ - MyBatis XML 映射文件
+EmployeeMapper.xml - 员工 SQL 映射文件
+配置文件
+application.yml - 主配置文件
+application-dev.yml - 开发环境配置
+🏗️ 整体架构分层
+┌─────────────────────────────────────┐
+│         前端（小程序/Web）            │
+└──────────────┬──────────────────────┘
+               │ HTTP 请求
+┌──────────────▼──────────────────────┐
+│   Controller（控制器层）              │ ← sky-server/controller
+│   接收请求、参数校验、返回响应         │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   Interceptor（拦截器）              │ ← sky-server/interceptor
+│   JWT 验证、权限检查                 │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   Service（业务逻辑层）              │ ← sky-server/service
+│   业务规则处理、事务管理             │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   Mapper（数据访问层）               │ ← sky-server/mapper
+│   MyBatis SQL 操作                  │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   MySQL 数据库                       │
+└─────────────────────────────────────┘
+📚 技术栈总结
+框架：Spring Boot 2.7.3 + MyBatis
+数据库：MySQL + Druid 连接池
+缓存：Redis + Spring Cache
+认证：JWT（jjwt）
+文档：Knife4j（Swagger 增强版）
+工具：Lombok、FastJSON、PageHelper 分页
+文件存储：阿里云 OSS
+支付：微信支付 SDK
+实时通信：WebSocket
+报表：Apache POI（Excel 导出）
+
+这是一个标准的三层架构企业级项目，采用模块化设计，职责清晰，便于维护和扩展。
