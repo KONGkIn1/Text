@@ -6,3 +6,13 @@ sky:
     database: sky_take_out
     username: root
     password: 123456
+
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: your-access-key-id
+    access-key-secret: your-access-key-secret
+    bucket-name: sky-java-itheima
+
+
+  git add sky-take-out/sky-server/src/main/resources/application-dev.yml
+  git commit --amend -m "新增菜品业务代码开发"
