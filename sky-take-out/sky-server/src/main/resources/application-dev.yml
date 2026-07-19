@@ -9,6 +9,15 @@ sky:
 
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-id: your-access-key-id
-    access-key-secret: your-access-key-secret
+    access-key-id: 你的access-key-id
+    access-key-secret: 你的access-key-secret
     bucket-name: sky-java-itheima
+
+  redis:
+    host: localhost
+    port: 6379
+    database: 10
+
+  wechat:
+    appid: appid
+    secret: secret
