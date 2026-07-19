@@ -4,3 +4,4 @@
 *Text.java
 *.class
 **/text/
+**/application-dev.yml
