@@ -18,7 +18,7 @@ public class ShopController {
 
 
     @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
 
     /**
