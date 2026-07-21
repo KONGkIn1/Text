@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -138,4 +139,18 @@ public class DishController {
         redisTemplate.delete(keys);
 
     }
+
+    /**
+     * 条件查询菜品（用于套餐选择菜品等场景）
+     * @param dish
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("条件查询菜品")
+    public Result<List<DishVO>> list(Dish dish) {
+        log.info("条件查询菜品：{}", dish);
+        List<DishVO> dishVOList = dishService.listWithFlavor(dish);
+        return Result.success(dishVOList);
+    }
+
 }
