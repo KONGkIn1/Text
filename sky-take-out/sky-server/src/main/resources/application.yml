@@ -56,3 +56,9 @@ sky:
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
+
+  shop:
+    address: 河南省商丘市平原中路55号
+
+  baidu:
+    ak: ${sky.baidu.ak}
